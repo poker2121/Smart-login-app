@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/home.css">
+  <title>Home</title>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Smart System</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item d-lg-none">
+            <button id="logoutBtn" class="btn btn-danger w-100 my-2" type="button">Logout</button>
+          </li>
+        </ul>
+      </div>
+      <button id="logoutBtnLg" class="btn btn-danger d-none d-lg-inline" type="button">Logout</button>
+    </div>
+  </nav>
+  
+  <main class="py-5">
+    <div class="background kenburns-top"></div>
+    <div class="container d-flex justify-content-center align-items-center h-100">
+      <div class="frame">
+        <h1 class="text-white text-center">Welcome<span id="username"></span></h1>
+      </div>
+    </div>
+  </main>
+  
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>
