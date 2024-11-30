@@ -38,7 +38,7 @@ function login() {
     successMessage.textContent = "Login successful! Redirecting...";
     successMessage.style.display = "block"; 
     inCorrect.style.display = "none"; 
-    setTimeout(() => window.location.href = "/home.html", 2000);
+    setTimeout(() => window.location.href = "./home.html", 2000);
   } else {
     inCorrect.textContent = "Invalid email or password";
     inCorrect.style.display = "block"; 
@@ -98,7 +98,7 @@ function signup() {
   signupPassword.value = "";
 
   setTimeout(() => {
-    window.location.href = "/index.html";
+    window.location.href = "./index.html";
   }, 3000);
 }
 
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
   logoutButtons.forEach(function (button) {
     button.addEventListener("click", function () {
       localStorage.removeItem("currentUser"); 
-      window.location.href = "/index.html";  
+      window.location.href = "./index.html";  
     });
   });
 });
