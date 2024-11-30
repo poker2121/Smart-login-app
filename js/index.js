@@ -1,5 +1,3 @@
-//* login Process
-//^===============
 
 var signinEmail = document.getElementById("signinEmail");
 var signinPassword = document.getElementById("signinPassword");
@@ -9,7 +7,7 @@ var inCorrect = document.getElementById("incorrect");
 var successMessage = document.getElementById("successMessage");
 var logoutBtn = document.getElementById("logoutBtn");
 
-
+//* login Process
 function login() {
   inCorrect.style.display = "none"; 
   successMessage.style.display = "none"; 
@@ -45,7 +43,7 @@ function login() {
     successMessage.style.display = "none"; 
   }
 }
-
+//* Signup Process
 function signup() {
   var userNameValue = userName.value.trim();
   var signupEmailValue = signupEmail.value.trim();
