@@ -7,6 +7,7 @@ var inCorrect = document.getElementById("incorrect");
 var successMessage = document.getElementById("successMessage");
 var logoutBtn = document.getElementById("logoutBtn");
 
+//^==================================================================================
 //* login Process
 function login() {
   inCorrect.style.display = "none"; 
@@ -15,21 +16,35 @@ function login() {
   var signinEmailValue = signinEmail.value.trim();
   var signinPasswordValue = signinPassword.value.trim();
 
- 
-  if (!signinEmailValue || !signinPasswordValue) {
-    inCorrect.textContent = "All fields are required";
+  // Reset validation classes
+  signinEmail.classList.remove("is-valid", "is-invalid");
+  signinPassword.classList.remove("is-valid", "is-invalid");
+
+  let isEmailValid = signinEmailValue.length >= 5 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signinEmailValue);
+  let isPasswordValid = signinPasswordValue.length >= 5;
+
+  // Email validation
+  if (isEmailValid) {
+    signinEmail.classList.add("is-valid");
+  } else {
+    signinEmail.classList.add("is-invalid");
+  }
+
+  // Password validation
+  if (isPasswordValid) {
+    signinPassword.classList.add("is-valid");
+  } else {
+    signinPassword.classList.add("is-invalid");
+  }
+
+  // Stop login if any field is invalid
+  if (!isEmailValid || !isPasswordValid) {
+    inCorrect.textContent = "Invalid email or password format.";
     inCorrect.style.display = "block"; 
     return;
   }
 
- 
-  if (signinEmailValue.length < 5 || signinPasswordValue.length < 5) {
-    inCorrect.textContent = "Email and Password must be at least 5 characters long.";
-    inCorrect.style.display = "block"; 
-    return;
-  }
-
-  
+  // Check user in localStorage
   var storedUser = JSON.parse(localStorage.getItem(signinEmailValue));
 
   if (storedUser && storedUser.password === signinPasswordValue) {
@@ -43,6 +58,8 @@ function login() {
     successMessage.style.display = "none"; 
   }
 }
+
+//^==================================================================================
 //* Signup Process
 function signup() {
   var userNameValue = userName.value.trim();
@@ -100,12 +117,8 @@ function signup() {
   }, 3000);
 }
 
-
-
-
-
+//^==================================================================================
 document.addEventListener("DOMContentLoaded", function () {
-
   var usernameSpan = document.getElementById("username");
   var currentUser = localStorage.getItem("currentUser");
 
@@ -115,12 +128,12 @@ document.addEventListener("DOMContentLoaded", function () {
     usernameSpan.textContent = ", Guest";
   }
 
+  var logoutButton = document.querySelector("#logoutBtn, #logoutBtnLg");
 
-  var logoutButtons = document.querySelectorAll("#logoutBtn, #logoutBtnLg");
-  logoutButtons.forEach(function (button) {
-    button.addEventListener("click", function () {
-      localStorage.removeItem("currentUser"); 
-      window.location.href = "./index.html";  
+  if (logoutButton) {
+    logoutButton.addEventListener("click", function () {
+      localStorage.removeItem("currentUser");
+      window.location.href = "./index.html";
     });
-  });
+  }
 });
