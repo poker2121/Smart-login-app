@@ -5,7 +5,8 @@ var signupEmail = document.getElementById("signupEmail");
 var signupPassword = document.getElementById("signupPassword");
 var inCorrect = document.getElementById("incorrect");
 var successMessage = document.getElementById("successMessage");
-var logoutBtn = document.getElementById("logoutBtn");
+var logoutButton = document.querySelector("#logoutBtn, #logoutBtnLg");
+
 
 //^==================================================================================
 //* login Process
@@ -128,12 +129,21 @@ document.addEventListener("DOMContentLoaded", function () {
     usernameSpan.textContent = ", Guest";
   }
 
-  var logoutButton = document.querySelector("#logoutBtn, #logoutBtnLg");
 
-  if (logoutButton) {
-    logoutButton.addEventListener("click", function () {
-      localStorage.removeItem("currentUser");
-      window.location.href = "./index.html";
-    });
+  var logoutBtn = document.getElementById("logoutBtn");
+  var logoutBtnLg = document.getElementById("logoutBtnLg");
+
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", handleLogout);
+  }
+
+  if (logoutBtnLg) {
+    logoutBtnLg.addEventListener("click", handleLogout);
   }
 });
+
+function handleLogout() {
+  localStorage.removeItem("currentUser");
+  window.location.href = "./index.html";
+}
