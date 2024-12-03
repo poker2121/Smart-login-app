@@ -1,149 +1,74 @@
 
-var signinEmail = document.getElementById("signinEmail");
-var signinPassword = document.getElementById("signinPassword");
-var signupEmail = document.getElementById("signupEmail");
-var signupPassword = document.getElementById("signupPassword");
-var inCorrect = document.getElementById("incorrect");
-var successMessage = document.getElementById("successMessage");
-var logoutButton = document.querySelector("#logoutBtn, #logoutBtnLg");
+let signinEmail = document.getElementById("signinEmail");
+let signinPassword = document.getElementById("signinPassword");
+let inCorrect = document.getElementById("incorrect");
+let successMessage = document.getElementById("successMessage");
+//^===========================================================
 
-
-//^==================================================================================
-//* login Process
 function login() {
-  inCorrect.style.display = "none"; 
-  successMessage.style.display = "none"; 
+  resetMessages();
 
-  var signinEmailValue = signinEmail.value.trim();
-  var signinPasswordValue = signinPassword.value.trim();
+  let signinEmailValue = signinEmail.value.trim();
+  let signinPasswordValue = signinPassword.value.trim();
 
-  // Reset validation classes
+  resetValidationClasses();
+
+
+  let isEmailValid = validateEmail(signinEmailValue);
+  let isPasswordValid = validatePassword(signinPasswordValue);
+
+
+  let storedUser = getUserFromStorage(signinEmailValue);
+  let isEmailFound = !!storedUser;
+  let isPasswordCorrect = storedUser?.password === signinPasswordValue;
+
+  applyValidation(signinEmail, isEmailValid && isEmailFound);
+  applyValidation(signinPassword, isPasswordValid && isPasswordCorrect);
+
+  if (!isEmailFound || !isPasswordCorrect) {
+    displayError("Invalid email or password");
+    return;
+  }
+
+  displaySuccess("Login successful! Redirecting...");
+  setTimeout(() => {
+    window.location.href = "./home.html";
+  }, 2000);
+}
+
+function resetMessages() {
+  inCorrect.style.display = "none";
+  successMessage.style.display = "none";
+}
+
+function resetValidationClasses() {
   signinEmail.classList.remove("is-valid", "is-invalid");
   signinPassword.classList.remove("is-valid", "is-invalid");
-
-  let isEmailValid = signinEmailValue.length >= 5 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(signinEmailValue);
-  let isPasswordValid = signinPasswordValue.length >= 5;
-
-  // Email validation
-  if (isEmailValid) {
-    signinEmail.classList.add("is-valid");
-  } else {
-    signinEmail.classList.add("is-invalid");
-  }
-
-  // Password validation
-  if (isPasswordValid) {
-    signinPassword.classList.add("is-valid");
-  } else {
-    signinPassword.classList.add("is-invalid");
-  }
-
-  // Stop login if any field is invalid
-  if (!isEmailValid || !isPasswordValid) {
-    inCorrect.textContent = "Invalid email or password format.";
-    inCorrect.style.display = "block"; 
-    return;
-  }
-
-  // Check user in localStorage
-  var storedUser = JSON.parse(localStorage.getItem(signinEmailValue));
-
-  if (storedUser && storedUser.password === signinPasswordValue) {
-    successMessage.textContent = "Login successful! Redirecting...";
-    successMessage.style.display = "block"; 
-    inCorrect.style.display = "none"; 
-    setTimeout(() => window.location.href = "./home.html", 2000);
-  } else {
-    inCorrect.textContent = "Invalid email or password";
-    inCorrect.style.display = "block"; 
-    successMessage.style.display = "none"; 
-  }
 }
 
-//^==================================================================================
-//* Signup Process
-function signup() {
-  var userNameValue = userName.value.trim();
-  var signupEmailValue = signupEmail.value.trim();
-  var signupPasswordValue = signupPassword.value.trim();
+function validateEmail(email) {
+  let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return email.length >= 5 && emailRegex.test(email);
+}
 
-  inCorrect.textContent = ""; 
-  successMessage.textContent = ""; 
-  successMessage.style.display = "none"; 
-  inCorrect.style.display = "none"; 
+function validatePassword(password) {
+  return password.length >= 8;
+}
 
-  // Check if all fields are filled
-  if (!signupEmailValue || !signupPasswordValue || !userNameValue) {
-    inCorrect.textContent = "All fields are required";
-    inCorrect.style.display = "block"; 
-    return;
-  }
+function getUserFromStorage(email) {
+  return JSON.parse(localStorage.getItem(email));
+}
 
-  // Email validation regex
-  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(signupEmailValue)) {
-    inCorrect.textContent = "Please enter a valid email address";
-    inCorrect.style.display = "block";
-    return;
-  }
+function applyValidation(element, isValid) {
+  element.classList.add(isValid ? "is-valid" : "is-invalid");
+}
 
+function displayError(message) {
+  inCorrect.textContent = message;
+  inCorrect.style.display = "block";
+}
 
-  if (localStorage.getItem(signupEmailValue)) {
-    inCorrect.textContent = "Email already exists";
-    inCorrect.style.display = "block"; 
-    return;
-  }
-
-  var user = {
-    name: userNameValue,
-    email: signupEmailValue,
-    password: signupPasswordValue,
-  };
-
-  localStorage.setItem(signupEmailValue, JSON.stringify(user));
-
-  // Store the current user
-  localStorage.setItem("currentUser", userNameValue);
-
-
-  successMessage.textContent = "Account created successfully! Redirecting...";
+function displaySuccess(message) {
+  successMessage.textContent = message;
   successMessage.style.display = "block";
-
-  userName.value = "";
-  signupEmail.value = "";
-  signupPassword.value = "";
-
-  setTimeout(() => {
-    window.location.href = "./index.html";
-  }, 3000);
-}
-
-//^==================================================================================
-document.addEventListener("DOMContentLoaded", function () {
-  var usernameSpan = document.getElementById("username");
-  var currentUser = localStorage.getItem("currentUser");
-
-  if (currentUser) {
-    usernameSpan.textContent = `, ${currentUser}`;
-  } else {
-    usernameSpan.textContent = ", Guest";
-  }
-
-
-  var logoutBtn = document.getElementById("logoutBtn");
-  var logoutBtnLg = document.getElementById("logoutBtnLg");
-
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", handleLogout);
-  }
-
-  if (logoutBtnLg) {
-    logoutBtnLg.addEventListener("click", handleLogout);
-  }
-});
-
-function handleLogout() {
-  localStorage.removeItem("currentUser");
-  window.location.href = "./index.html";
 }

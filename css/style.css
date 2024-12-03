@@ -21,3 +21,18 @@ a{
   font-weight: 600;
 }
 
+.btncol{
+  background-color: #203e6e !important;
+  color: rgb(225, 239, 252);
+}
+.btncol:hover{
+  background-color: #3d65a5 !important;
+  color: rgb(255, 255, 255);
+}
+.is-valid {
+  border: 2px solid green;
+}
+
+.is-invalid {
+  border: 2px solid red;
+}
